@@ -6,7 +6,14 @@ async function run(){
     var u = new url.Url()
     u.protocol = 'https'
     u.host = 'crowdworks.jp'
-    const browser = await pptr.launch({ headless: false });
+
+    const params = process.env.CI ? {
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    } : {
+        headless: false,
+        slowMo: 250
+    };
+    const browser = await pptr.launch(params);
     const page = await browser.newPage()
     await page.goto('https://crowdworks.jp/login?ref=root_pages-index-header')
     await page.type('input[name="username"]', process.env.CW_USERNAME)
