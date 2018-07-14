@@ -5,7 +5,8 @@
   "author": "Yosuke Mukasa <26806017+mks1412@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node auto_recruit.js"
+    "start": "node auto_recruit.js",
+    "test": "NODE_ENV=test node auto_recruit.js"
   },
   "dependencies": {
     "dotenv": "^6.0.0",

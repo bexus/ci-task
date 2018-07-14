@@ -48,9 +48,13 @@ async function run(){
     await confirmBtn.click()
     await page.waitFor(1500)
     console.log("[INFO] Moved confirm page")
-    // await page.evaluate(() => { document.querySelector('input.submit').click() })
-    // await page.waitFor(1500)
-    console.log("[INFO] Completed")
+    if(process.env.NODE_ENV != "test") {
+        await page.evaluate(() => { document.querySelector('input.submit').click() })
+        await page.waitFor(1500)
+        console.log("[INFO] Completed")
+    } else {
+        console.log("[INFO] Test completed")
+    }
     await browser.close()
 }
 

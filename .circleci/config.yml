@@ -1,41 +1,56 @@
 version: 2
 jobs:
+  batch-test:
+    docker:
+      - image: circleci/node:7.10
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          paths: node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: *setup_puppeteer
+      - save_cache:
+          paths: node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn test
+
   batch:
     docker:
       - image: circleci/node:7.10
- 
     working_directory: ~/repo
- 
     steps:
       - checkout
- 
       - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
- 
-      - run: chmod +x ./setup_libxcb.sh
-      - run: sh ./setup_libxcb.sh
-      - run: yarn install
- 
-      - save_cache:
-          paths:
-            - node_modules
+          paths: node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
+      - run: *setup_puppeteer
+      - save_cache:
+          paths: node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn start
+
+references:
+  commands:
+    setup_puppeteer: &setup_puppeteer
+      name: Setup puppeteer
+      command: |
+        chmod +x ./setup_libxcb.sh
+        sh ./setup_libxcb.sh
+        yarn install
 
 workflows:
   version: 2
-  normal_workflow:
+  test_workflow:
+    jobs:
+      - batch-test
+  batch_workflow:
+    triggers:
+      - schedule:
+          cron: "0 0,5,10,19 * * *"
+          filters:
+            branches:
+              only:
+                - master
     jobs:
       - batch
-  # nightly_workflow:
-  #   triggers:
-  #     - schedule:
-  #         cron: "0 1 * * *"
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
-  #   jobs:
-  #     - batch
