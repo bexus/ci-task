@@ -24,6 +24,22 @@ jobs:
           paths: node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn test
+      - run:
+          name: notify to slack
+          command: |
+            PAYLOAD=`cat << EOS
+            {
+              "attachments": [
+                {
+                  "title": "[TEST] Auto CrowdWorks",
+                  "color": "good",
+                  "text": "CrowdWorksで新しく仕事を依頼しました"
+                }
+              ]
+            }
+            EOS
+            `
+            curl -X POST --data-urlencode "payload=$PAYLOAD" $SLACK_WEBHOOK_URL
 
   batch:
     docker:
@@ -39,6 +55,22 @@ jobs:
           paths: node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn start
+      - run:
+          name: notify to slack
+          command: |
+            PAYLOAD=`cat << EOS
+            {
+              "attachments": [
+                {
+                  "title": "Auto CrowdWorks",
+                  "color": "good",
+                  "text": "CrowdWorksで新しく仕事を依頼しました"
+                }
+              ]
+            }
+            EOS
+            `
+            curl -X POST --data-urlencode "payload=$PAYLOAD" $SLACK_WEBHOOK_URL
 
 workflows:
   version: 2
@@ -48,7 +80,7 @@ workflows:
   batch_workflow:
     triggers:
       - schedule:
-          cron: "0 0,5,10,19 * * *"
+          cron: "0 0,5,10 * * *"
           filters:
             branches:
               only:
