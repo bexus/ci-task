@@ -1,0 +1,15 @@
+{
+  "name": "ci-batch",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Yosuke Mukasa <26806017+mks1412@users.noreply.github.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node auto_recruit.js"
+  },
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "puppeteer": "^1.6.0",
+    "url": "^0.11.0"
+  }
+}
