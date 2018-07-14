@@ -23,3 +23,19 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: yarn start
+
+workflows:
+  version: 2
+  normal_workflow:
+    jobs:
+      - batch
+  # nightly_workflow:
+  #   triggers:
+  #     - schedule:
+  #         cron: "0 1 * * *"
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
+  #   jobs:
+  #     - batch
