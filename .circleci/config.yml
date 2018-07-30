@@ -80,7 +80,7 @@ workflows:
   batch_workflow:
     triggers:
       - schedule:
-          cron: "0 0,5,10 * * *"
+          cron: "0 1,3-5,10,12-14 * * *"
           filters:
             branches:
               only:
