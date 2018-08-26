@@ -11,6 +11,7 @@
   "dependencies": {
     "dotenv": "^6.0.0",
     "puppeteer": "^1.6.0",
+    "sync-request": "^6.0.0",
     "url": "^0.11.0"
   }
 }

@@ -1,13 +1,16 @@
 const pptr = require('puppeteer');
 const url = require('url');
+const request = require('sync-request');
 require('dotenv').config();
 
 async function run(){
-    var u = new url.Url()
+    const cwInfoAPI = 'https://anatamo-kirei.jp/wp-json/wp/v2/cwinfo'
+    let response = request('GET', cwInfoAPI)
+    const target = JSON.parse(response.body)
+    console.log("[INFO] Target Offer: " + target.offer_url)
+    let u = new url.Url()
     u.protocol = 'https'
     u.host = 'crowdworks.jp'
-    const target = 'https://crowdworks.jp/public/jobs/2365914'
-
     const params = process.env.CI ? {
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     } : {
@@ -23,7 +26,7 @@ async function run(){
     loginBtn.click()
     await page.waitForNavigation({timeout: 60000, waitUntil: "domcontentloaded"})
     console.log("[INFO] Logined")
-    await page.goto(target)
+    await page.goto(target.offer_url)
     const copyBtn = await page.$('.action_buttons a.copy')
     await copyBtn.click()
     await page.waitFor(1000)
@@ -50,6 +53,5 @@ async function run(){
     }
     await browser.close()
 }
-
 run()
 
