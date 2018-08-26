@@ -6,12 +6,13 @@ async function run(){
     var u = new url.Url()
     u.protocol = 'https'
     u.host = 'crowdworks.jp'
+    const target = 'https://crowdworks.jp/public/jobs/2365914'
 
     const params = process.env.CI ? {
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     } : {
         headless: false,
-        slowMo: 250
+        slowMo: 50
     };
     const browser = await pptr.launch(params);
     const page = await browser.newPage()
@@ -22,18 +23,10 @@ async function run(){
     loginBtn.click()
     await page.waitForNavigation({timeout: 60000, waitUntil: "domcontentloaded"})
     console.log("[INFO] Logined")
-    const newBtn = await page.$('.menu_lists.employer.current > li:first-child > a')
-    await newBtn.click()
-    await page.goto('https://crowdworks.jp/job_offers?source=copy_job_offer')
-    await page.waitFor(2000)
-    const copyRequest = await page.evaluate(() => {
-        a = document.querySelector('.valign_middle > tr:first-child .edit > a')
-        href = a.getAttribute('href')
-        return href
-    })
-    u.pathname = copyRequest
-    const request = u.format()
-    await page.goto(request)
+    await page.goto(target)
+    const copyBtn = await page.$('.action_buttons a.copy')
+    await copyBtn.click()
+    await page.waitFor(1000)
     console.log("[INFO] Moved apply page")
     const autoFill = await page.evaluate(() => {
         begginer = document.querySelector('.custom_fields.specific_level .beginner input')
