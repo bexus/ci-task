@@ -14,10 +14,10 @@ const recruit = async (browser, url) => {
     await page.waitForNavigation({timeout: 90000, waitUntil: "domcontentloaded"})
     console.log("[INFO] Logined")
     await page.goto(url, {waitUntil: "domcontentloaded"})
-    await page.waitFor(2000)
+    await page.waitFor(3000)
     const copyBtn = await page.$('.action_buttons a.copy')
     await copyBtn.click()
-    await page.waitFor(2000)
+    await page.waitFor(3000)
     console.log("[INFO] Moved apply page")
     await page.evaluate(() => {
         moreThanOne = document.querySelector('#project_contract_hope_number_more_than_one')
