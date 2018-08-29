@@ -6,6 +6,7 @@ const puppeteer = require('./utils/pptr')
 const recruit = async (browser, url) => {
     console.log("[INFO] Target Job: " + url)
     let page = await browser.newPage()
+    process.on("unhandledRejection", console.dir)
     await page.goto(urlUtil.cw)
     await page.type('input[name="username"]', process.env.CW_USERNAME)
     await page.type('input[name="password"]', process.env.CW_PASSWORD)
