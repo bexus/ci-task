@@ -45,7 +45,7 @@ const recruit = async (browser, url) => {
     const response = apiUtil.fetch(urlUtil.api)
     const promises = []
     const browser = await puppeteer.browser
-    for (const url of response.offer_url) {6
+    for (const url of response.offer_url) {
         promises.push(recruit(browser, url))
     }
     for (const promise of promises) {
