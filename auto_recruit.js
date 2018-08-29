@@ -30,7 +30,7 @@ const recruit = async (browser, url) => {
     await confirmBtn.click()
     await page.waitFor(2000)
     console.log("[INFO] Moved confirm page")
-    if(process.env.NODE_ENV != 'test' || process.env.API_ENV != 'stage') {
+    if(process.env.NODE_ENV != 'test') {
         await page.evaluate(() => { document.querySelector('input.submit').click() })
         await page.waitFor(2000)
         console.log("[INFO] Completed")
