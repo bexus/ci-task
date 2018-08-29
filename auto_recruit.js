@@ -14,9 +14,10 @@ const recruit = async (browser, url) => {
     await page.waitForNavigation({timeout: 90000, waitUntil: "domcontentloaded"})
     console.log("[INFO] Logined")
     await page.goto(url, {waitUntil: "domcontentloaded"})
+    await page.waitFor(2000)
     const copyBtn = await page.$('.action_buttons a.copy')
     await copyBtn.click()
-    await page.waitFor(1500)
+    await page.waitFor(2000)
     console.log("[INFO] Moved apply page")
     await page.evaluate(() => {
         moreThanOne = document.querySelector('#project_contract_hope_number_more_than_one')
@@ -41,13 +42,9 @@ const recruit = async (browser, url) => {
 
 (async () => {
     const response = apiUtil.fetch(urlUtil.api)
-    const promises = []
     const browser = await puppeteer.browser
-    for (const url of response.offer_url) {
-        promises.push(recruit(browser, url))
-    }
-    for (const promise of promises) {
-        await promise;
-    }
+    await Promise.all(
+        response.offer_url.map(url => recruit(browser, url))
+    );
     browser.close();
 })()
