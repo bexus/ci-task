@@ -19,8 +19,6 @@ const recruit = async (browser, url) => {
     await page.waitFor(1500)
     console.log("[INFO] Moved apply page")
     await page.evaluate(() => {
-        begginer = document.querySelector('.custom_fields.specific_level .beginner input')
-        begginer.checked = true
         moreThanOne = document.querySelector('#project_contract_hope_number_more_than_one')
         moreThanOne.checked = true
         hopeNumField = document.querySelector('#job_offer_project_contract_hope_number')
@@ -29,11 +27,11 @@ const recruit = async (browser, url) => {
     console.log("[INFO] Inputed data")
     const confirmBtn = await page.$('.submit button')
     await confirmBtn.click()
-    await page.waitFor(1500)
+    await page.waitFor(2000)
     console.log("[INFO] Moved confirm page")
-    if(process.env.NODE_ENV != "test") {
+    if(process.env.NODE_ENV != 'test' || process.env.API_ENV != 'stage') {
         await page.evaluate(() => { document.querySelector('input.submit').click() })
-        await page.waitFor(1500)
+        await page.waitFor(2000)
         console.log("[INFO] Completed")
     } else {
         console.log("[INFO] Test completed")
