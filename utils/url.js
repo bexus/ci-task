@@ -6,5 +6,5 @@ const endpoint = '/wp-json/wp/v2/cwinfo'
 
 module.exports = {
   api: `${protocol}://${host}${endpoint}`,
-  cw: 'https://crowdworks.jp/login?ref=root_pages-index-header'
+  cw: 'https://crowdworks.jp/login?ref=root_pages-index-header',
 }
