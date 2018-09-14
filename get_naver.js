@@ -9,7 +9,7 @@ const path = require('path');
   const browser = await puppeteer.browser
   const paths = ["wellness", "girls"]
   const gasURL = "https://script.google.com/macros/s/AKfycbxxoLcXqPYJQZv6O3ZNurhYOkctCZq8CWWKAAqjApqJ5CCzbW0/exec"
-  const pageLimit = 2
+  const pageLimit = 5
 
   for(let p of paths) {
     // カテゴリページへ遷移
@@ -64,7 +64,7 @@ const path = require('path');
             pv: document.querySelector('.mdHeading01CountPV .mdHeading01CountNum').innerHTML
           }
         })
-        console.dir(postData)
+        console.log(postData)
         await buffer.push(postData)
       }
       await postTab.close()
