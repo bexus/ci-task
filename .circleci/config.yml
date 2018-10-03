@@ -77,13 +77,13 @@ workflows:
   test_workflow:
     jobs:
       - batch-test
-  batch_workflow:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - master
-    jobs:
-      - batch
+  # batch_workflow:
+  #   triggers:
+  #     - schedule:
+  #         cron: "0 0 * * *"
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
+  #   jobs:
+  #     - batch

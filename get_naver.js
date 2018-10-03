@@ -9,12 +9,12 @@ const path = require('path');
   const browser = await puppeteer.browser
   const paths = ["wellness", "girls"]
   const gasURL = "https://script.google.com/macros/s/AKfycbxxoLcXqPYJQZv6O3ZNurhYOkctCZq8CWWKAAqjApqJ5CCzbW0/exec"
-  const pageLimit = 5
+  const pageLimit = 50
 
   for(let p of paths) {
     // カテゴリページへ遷移
     const page = await browser.newPage()
-    let pageNo = 1
+    let pageNo = 19
     const url = `https://matome.naver.jp/${p}?page=${pageNo}`
     await page.goto(url)
     console.log(`Reached: ${url}`)
@@ -22,7 +22,7 @@ const path = require('path');
     await request.post({
       uri: gasURL,
       headers: { "Content-type": "application/json" },
-      json: { type: p, method: "create", sheetName: moment().format('YYYY/MM/DD') }
+      json: { type: p, method: "create", sheetName: "test" }
     }, (err, res, data) => {
       if(err) console.log(err)
     });
@@ -72,7 +72,7 @@ const path = require('path');
       await request.post({
         uri: gasURL,
         headers: { "Content-type": "application/json" },
-        json: { type: p, method: "insert", sheetName: moment().format('YYYY/MM/DD'), rows: buffer }
+        json: { type: p, method: "insert", sheetName: "test", rows: buffer }
       }, (err, res, data) => {
         if(err) console.log(err)
       })
