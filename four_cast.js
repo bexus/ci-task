@@ -25,10 +25,12 @@ const loginWithUserInfo = async ({page, user_id}) => {
     document.querySelector('#id').value = id
     document.querySelector('#passwd').value = password
   }, process.env[`ID_${user_id}`], process.env[`PW_${user_id}`])
+  await page.screenshot({path: 'loginpage.png'})
   await page.click('.MdSPBtnLogin')
   await page.waitFor(8000)
   await page.goto('https://www.4cast.to/web/mypage')
   await page.waitFor(8000)
+  await page.screenshot({path: 'mypage1.png'})
   console.log(`logined with user: ${user_id}`)
   // ローカルではcookieを保存
   if(!process.env.CI) {
@@ -78,10 +80,15 @@ const loginWithCookie = async ({page}) => {
 
   // 未参加一覧
   await page.waitFor(5000)
-  await page.screenshot({path: 'mypage.png'})
-  const left_num = await page.evaluate(() => {
-    return parseInt(document.querySelector('.left .num').innerText.replace(',',''), 10)
-  })
+  let left_num
+  try {
+    left_num = await page.evaluate(() => {
+      return parseInt(document.querySelector('.left .num').innerText.replace(',',''), 10)
+    })
+  } catch(e) {
+    console.log(e)
+    return
+  }
   console.log(`未参加: ${left_num}個を予想します。`)
   await page.click('.left .num')
   await page.waitFor(5000)
