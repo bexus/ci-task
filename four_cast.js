@@ -18,17 +18,17 @@ const SLACK_USERS = [
 
 const loginWithUserInfo = async ({page, user_id}) => {
   await page.goto('https://www.4cast.to/web/login')
-  await page.waitForSelector('.login_btn', { timeout })
+  await page.waitFor(5000)
   await page.click('.login_btn button')
-  await page.waitForSelector('#id')
+  await page.waitFor(5000)
   await page.evaluate((id, password) => {
     document.querySelector('#id').value = id
     document.querySelector('#passwd').value = password
   }, process.env[`ID_${user_id}`], process.env[`PW_${user_id}`])
   await page.click('.MdSPBtnLogin')
-  await page.waitFor(3000)
+  await page.waitFor(5000)
   await page.goto('https://www.4cast.to/web/mypage')
-  await page.waitFor(3000)
+  await page.waitFor(5000)
   console.log(`logined with user: ${user_id}`)
   // ローカルではcookieを保存
   if(!process.env.CI) {
@@ -77,23 +77,25 @@ const loginWithCookie = async ({page}) => {
   }
 
   // 未参加一覧
+  await page.waitFor(5000)
+  await page.screenshot({path: 'mypage.png'})
   const left_num = await page.evaluate(() => {
     return parseInt(document.querySelector('.left .num').innerText.replace(',',''), 10)
   })
   console.log(`未参加: ${left_num}個を予想します。`)
   await page.click('.left .num')
-  await page.waitForSelector('.list_img li', {timeout})
+  await page.waitFor(3000)
   await page.click('.list_img li')
-  await page.waitForSelector('.btn_quiz_next')
+  await page.waitFor(5000)
 
   global.count = 0
 
   for(let i = 0; i < left_num; i++) {
     try {
       await page.click('.btn_quiz_next')
-      await page.waitFor(Math.random())
+      await page.waitFor(3000)
       await page.click('.quiz_lst ul li a.bar')
-      await page.waitFor(1000 + Math.random())
+      await page.waitFor(2000 + Math.random())
       const result = await page.evaluate((id) => {
         let question = document.querySelector('.card_tit').textContent
         let forecast = document.querySelector('.tit').textContent
@@ -101,7 +103,7 @@ const loginWithCookie = async ({page}) => {
       }, global.count)
       console.log(result)
       await page.click('.btn.type1')
-      await page.waitFor(1000 + Math.random())
+      await page.waitFor(3000 + Math.random())
       global.count++
     } catch(error) {
       console.log(error)
@@ -110,7 +112,7 @@ const loginWithCookie = async ({page}) => {
   }
 
   await page.goto('https://www.4cast.to/web/mypage')
-  await page.waitForSelector('.left', {timeout})
+  await page.waitFor(2000)
   await page.screenshot({path: RESULT_SCREENSHOT_PATH})
   await browser.close()
 
