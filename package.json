@@ -5,12 +5,12 @@
   "author": "Yosuke Mukasa <26806017+mks1412@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node auto_recruit.js",
-    "test": "NODE_ENV=test node auto_recruit.js"
+    "start": "node four_cast.js"
   },
   "dependencies": {
     "dotenv": "^6.0.0",
     "puppeteer": "^1.6.0",
+    "request": "^2.88.0",
     "url": "^0.11.0"
   }
 }

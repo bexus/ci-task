@@ -10,7 +10,7 @@ references:
         yarn install
 
 jobs:
-  batch-test:
+  auto_forcast:
     docker:
       - image: circleci/node:7.10
     working_directory: ~/repo
@@ -23,23 +23,7 @@ jobs:
       - save_cache:
           paths: node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn test
-      - run:
-          name: notify to slack
-          command: |
-            PAYLOAD=`cat << EOS
-            {
-              "attachments": [
-                {
-                  "title": "[TEST] Auto CrowdWorks",
-                  "color": "good",
-                  "text": "CrowdWorksで新しく仕事を依頼しました"
-                }
-              ]
-            }
-            EOS
-            `
-            curl -X POST --data-urlencode "payload=$PAYLOAD" $SLACK_WEBHOOK_URL
+      - run: yarn start
 
   batch:
     docker:
@@ -55,35 +39,19 @@ jobs:
           paths: node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn start
-      - run:
-          name: notify to slack
-          command: |
-            PAYLOAD=`cat << EOS
-            {
-              "attachments": [
-                {
-                  "title": "Auto CrowdWorks",
-                  "color": "good",
-                  "text": "CrowdWorksで新しく仕事を依頼しました"
-                }
-              ]
-            }
-            EOS
-            `
-            curl -X POST --data-urlencode "payload=$PAYLOAD" $SLACK_WEBHOOK_URL
 
 workflows:
   version: 2
-  test_workflow:
+  ci_workflow:
     jobs:
-      - batch-test
-  batch_workflow:
-    triggers:
-      - schedule:
-          cron: "0 3,5,7,8,10,11,12,13,14 * * *"
-          filters:
-            branches:
-              only:
-                - master
-    jobs:
-      - batch
+      - auto_forcast
+  # batch_workflow:
+  #   triggers:
+  #     - schedule:
+  #         cron: "0 3,5,7,8,10,11,12,13,14 * * *"
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
+  #   jobs:
+  #     - batch
