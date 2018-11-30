@@ -20,16 +20,16 @@ const loginWithUserInfo = async ({page, user_id}) => {
   await page.goto('https://www.4cast.to/web/login')
   await page.waitFor(10000)
   await page.click('.login_btn button')
-  await page.waitFor(8000)
+  await page.waitFor(10000)
   await page.evaluate((id, password) => {
     document.querySelector('#id').value = id
     document.querySelector('#passwd').value = password
   }, process.env[`ID_${user_id}`], process.env[`PW_${user_id}`])
   await page.screenshot({path: 'loginpage.png'})
   await page.click('.MdSPBtnLogin')
-  await page.waitFor(8000)
+  await page.waitFor(10000)
   await page.goto('https://www.4cast.to/web/mypage')
-  await page.waitFor(8000)
+  await page.waitFor(10000)
   await page.screenshot({path: 'mypage1.png'})
   console.log(`logined with user: ${user_id}`)
   // ローカルではcookieを保存
@@ -79,7 +79,7 @@ const loginWithCookie = async ({page}) => {
   }
 
   // 未参加一覧
-  await page.waitFor(5000)
+  await page.waitFor(3000)
   let left_num
   try {
     left_num = await page.evaluate(() => {
@@ -100,9 +100,9 @@ const loginWithCookie = async ({page}) => {
   for(let i = 0; i < left_num; i++) {
     try {
       await page.click('.btn_quiz_next')
-      await page.waitFor(3000)
+      await page.waitFor(2000)
       await page.click('.quiz_lst ul li a.bar')
-      await page.waitFor(3000 + Math.random())
+      await page.waitFor(2000 + Math.random())
       const result = await page.evaluate((id) => {
         let question = document.querySelector('.card_tit').textContent
         let forecast = document.querySelector('.tit').textContent
@@ -110,7 +110,7 @@ const loginWithCookie = async ({page}) => {
       }, global.count)
       console.log(result)
       await page.click('.btn.type1')
-      await page.waitFor(3000 + Math.random())
+      await page.waitFor(2000 + Math.random())
       global.count++
     } catch(error) {
       console.log(error)
@@ -119,7 +119,7 @@ const loginWithCookie = async ({page}) => {
   }
 
   await page.goto('https://www.4cast.to/web/mypage')
-  await page.waitFor(2000)
+  await page.waitFor(10000)
   await page.screenshot({path: RESULT_SCREENSHOT_PATH})
   await browser.close()
 
