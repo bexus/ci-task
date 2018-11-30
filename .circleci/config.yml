@@ -10,7 +10,7 @@ references:
         yarn install
 
 jobs:
-  auto_forcast:
+  build:
     docker:
       - image: circleci/node:8.9.4
     working_directory: ~/repo
@@ -44,7 +44,7 @@ workflows:
   version: 2
   ci_workflow:
     jobs:
-      - auto_forcast
+      - build
   # batch_workflow:
   #   triggers:
   #     - schedule:
