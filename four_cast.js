@@ -18,7 +18,7 @@ const SLACK_USERS = [
 
 const loginWithUserInfo = async ({page, user_id}) => {
   await page.goto('https://www.4cast.to/web/login')
-  await page.waitFor('.login_btn', { timeout })
+  await page.waitForSelector('.login_btn', { timeout })
   await page.click('.login_btn button')
   await page.waitForSelector('#id')
   await page.evaluate((id, password) => {
@@ -28,7 +28,7 @@ const loginWithUserInfo = async ({page, user_id}) => {
   await page.click('.MdSPBtnLogin')
   await page.waitFor(3000)
   await page.goto('https://www.4cast.to/web/mypage')
-  await page.waitFor('.left', {timeout})
+  await page.waitFor(3000)
   console.log(`logined with user: ${user_id}`)
   // ローカルではcookieを保存
   if(!process.env.CI) {
@@ -77,16 +77,16 @@ const loginWithCookie = async ({page}) => {
   }
 
   // 未参加一覧
-  await page.waitFor('.left', {timeout})
+  await page.waitForSelector('.left', {timeout})
   await page.waitFor(2000 + Math.random())
   const left_num = await page.evaluate(() => {
     return parseInt(document.querySelector('.left .num').innerText.replace(',',''), 10)
   })
   console.log(`未参加: ${left_num}個を予想します。`)
   await page.click('.left .num')
-  await page.waitFor('.list_img li', {timeout})
+  await page.waitForSelector('.list_img li', {timeout})
   await page.click('.list_img li')
-  await page.waitFor('.btn_quiz_next')
+  await page.waitForSelector('.btn_quiz_next')
 
   global.count = 0
 
@@ -112,7 +112,7 @@ const loginWithCookie = async ({page}) => {
   }
 
   await page.goto('https://www.4cast.to/web/mypage')
-  await page.waitFor('.left', {timeout})
+  await page.waitForSelector('.left', {timeout})
   await page.screenshot({path: RESULT_SCREENSHOT_PATH})
   await browser.close()
 
