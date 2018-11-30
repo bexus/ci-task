@@ -25,9 +25,11 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn start
       - store_artifacts:
-        path: ~/repo/loginpage.png
+          path: ~/repo/loginpage.png
+          when: always
       - store_artifacts:
-        path: ~/repo/mypage1.png
+          path: ~/repo/mypage1.png
+          when: always
 
   batch:
     docker:
