@@ -77,8 +77,6 @@ const loginWithCookie = async ({page}) => {
   }
 
   // 未参加一覧
-  await page.waitForSelector('.left', {timeout})
-  await page.waitFor(2000 + Math.random())
   const left_num = await page.evaluate(() => {
     return parseInt(document.querySelector('.left .num').innerText.replace(',',''), 10)
   })
