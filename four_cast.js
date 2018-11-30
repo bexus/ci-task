@@ -18,17 +18,17 @@ const SLACK_USERS = [
 
 const loginWithUserInfo = async ({page, user_id}) => {
   await page.goto('https://www.4cast.to/web/login')
-  await page.waitFor(5000)
+  await page.waitFor(10000)
   await page.click('.login_btn button')
-  await page.waitFor(5000)
+  await page.waitFor(8000)
   await page.evaluate((id, password) => {
     document.querySelector('#id').value = id
     document.querySelector('#passwd').value = password
   }, process.env[`ID_${user_id}`], process.env[`PW_${user_id}`])
   await page.click('.MdSPBtnLogin')
-  await page.waitFor(5000)
+  await page.waitFor(8000)
   await page.goto('https://www.4cast.to/web/mypage')
-  await page.waitFor(5000)
+  await page.waitFor(8000)
   console.log(`logined with user: ${user_id}`)
   // ローカルではcookieを保存
   if(!process.env.CI) {
@@ -84,7 +84,7 @@ const loginWithCookie = async ({page}) => {
   })
   console.log(`未参加: ${left_num}個を予想します。`)
   await page.click('.left .num')
-  await page.waitFor(3000)
+  await page.waitFor(5000)
   await page.click('.list_img li')
   await page.waitFor(5000)
 
@@ -95,7 +95,7 @@ const loginWithCookie = async ({page}) => {
       await page.click('.btn_quiz_next')
       await page.waitFor(3000)
       await page.click('.quiz_lst ul li a.bar')
-      await page.waitFor(2000 + Math.random())
+      await page.waitFor(3000 + Math.random())
       const result = await page.evaluate((id) => {
         let question = document.querySelector('.card_tit').textContent
         let forecast = document.querySelector('.tit').textContent
