@@ -5,6 +5,7 @@ const fs = require('fs')
 require('dotenv').config()
 const timeout = 60000
 const cookies_path = './cookies.json'
+const slack_user_id = process.env.SLACK_USER_ID
 const RESULT_SCREENSHOT_PATH = 'result.png'
 const SLACK_API_URL = 'https://slack.com/api/files.upload'
 const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN
@@ -27,9 +28,9 @@ const loginWithUserInfo = async ({page, user_id}) => {
   }, process.env[`ID_${user_id}`], process.env[`PW_${user_id}`])
   await page.screenshot({path: 'loginpage.png'})
   await page.click('.MdSPBtnLogin')
-  await page.waitFor(10000)
+  await page.waitFor(13000)
   await page.goto('https://www.4cast.to/web/mypage')
-  await page.waitFor(10000)
+  await page.waitFor(13000)
   await page.screenshot({path: 'mypage1.png'})
   console.log(`logined with user: ${user_id}`)
   // ローカルではcookieを保存
@@ -50,7 +51,7 @@ const loginWithCookie = async ({page}) => {
 }
 
 (async () => {
-  const user_id = SLACK_USERS.indexOf(process.env.SLACK_USER_ID)
+  const user_id = SLACK_USERS.indexOf(slack_user_id)
   if(user_id === -1) {
     console.log('ユーザー未登録です')
     return
@@ -100,9 +101,14 @@ const loginWithCookie = async ({page}) => {
   for(let i = 0; i < left_num; i++) {
     try {
       await page.click('.btn_quiz_next')
-      await page.waitFor(2000)
-      await page.click('.quiz_lst ul li a.bar')
-      await page.waitFor(2000 + Math.random())
+      await page.waitFor(1000)
+      const choices = await page.$$('.quiz_lst ul li a.bar')
+      if(choices.length > 3) {
+        await choices[Math.floor( Math.random() * 3 )].click()
+      } else {
+        await choices[0].click()
+      }
+      await page.waitFor(1000 + Math.random())
       const result = await page.evaluate((id) => {
         let question = document.querySelector('.card_tit').textContent
         let forecast = document.querySelector('.tit').textContent
@@ -110,7 +116,7 @@ const loginWithCookie = async ({page}) => {
       }, global.count)
       console.log(result)
       await page.click('.btn.type1')
-      await page.waitFor(2000 + Math.random())
+      await page.waitFor(1000 + Math.random())
       global.count++
     } catch(error) {
       console.log(error)
@@ -130,7 +136,7 @@ const loginWithCookie = async ({page}) => {
     formData: {
       token: SLACK_BOT_TOKEN,
       filename: RESULT_SCREENSHOT_PATH,
-      initial_comment: `${global.count}個予想してやったぞ`,
+      initial_comment: `<@${slack_user_id}> ${global.count}個予想してやったぞ`,
       file: fs.createReadStream('./' + RESULT_SCREENSHOT_PATH),
       channels: CHANNEL
     }
