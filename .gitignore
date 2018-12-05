@@ -81,4 +81,4 @@ typings/
 
 cookies.json
 
-api
+.envrc
