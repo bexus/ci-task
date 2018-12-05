@@ -2,7 +2,6 @@ const pptr = require('puppeteer')
 const devices = require('puppeteer/DeviceDescriptors')
 const request = require('request')
 const fs = require('fs')
-require('dotenv').config()
 const timeout = 60000
 const cookies_path = './cookies.json'
 const slack_user_id = process.env.SLACK_USER_ID

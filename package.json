@@ -1,16 +1,14 @@
 {
-  "name": "ci-batch",
+  "name": "ci-task",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Yosuke Mukasa <26806017+mks1412@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node four_cast.js"
+    "start": "node forecast",
+    "task": "node $CI_TASK"
   },
   "dependencies": {
-    "dotenv": "^6.0.0",
-    "google-spreadsheet": "^2.0.5",
-    "kuromoji": "^0.1.2",
     "moment": "^2.22.2",
     "puppeteer": "^1.6.0",
     "request": "^2.88.0",
