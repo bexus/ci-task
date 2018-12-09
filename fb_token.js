@@ -1,7 +1,7 @@
 const TinderAuth = require('./tinderauth');
 const Crypt = require('./util/crypt');
 const axios = require('axios');
-const HUBOT_API_URL = 'http://localhost:8080/service_users/tinder';
+const HUBOT_API_URL = `${process.env.HUBOT_HOST || 'http://localhost:8080/'}service_users/tinder`;
 
 (async () => {
   let response = {}
@@ -12,8 +12,6 @@ const HUBOT_API_URL = 'http://localhost:8080/service_users/tinder';
     process.exit(1)
   }
   let users = response.data
-  users['XXXXXXX'] = users['UAQNQ5Y0M']
-
   for(uid in users) {
     let email = users[uid].email
     let password = Crypt.decrypt(users[uid].password)
