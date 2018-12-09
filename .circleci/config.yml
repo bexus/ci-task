@@ -55,7 +55,7 @@ jobs:
       - save_cache:
           paths: node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn update_token
+      - run: node fb_token
 
 workflows:
   version: 2

@@ -23,7 +23,6 @@ module.exports = class TinderAuth {
       await page.type('#pass', this._password)
       await page.click('#loginbutton')
       await page.waitFor(5000)
-      console.log('passed login')
       const urlRegex = /\/v[0-9]\.[0-9]\/dialog\/oauth\/(confirm|read)\?dpr=[0-9]{1}/
       page.on('response', async response => {
         if (response.url().match(urlRegex)) {

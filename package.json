@@ -6,8 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node forecast",
-    "task": "node $CI_TASK",
-    "update_token": "node fb_token"
+    "task": "node $CI_TASK"
   },
   "dependencies": {
     "axios": "^0.18.0",
