@@ -23,6 +23,8 @@ jobs:
           name: Setup puppeteer
           command: |
             if [ -z "$PUPPETEER" ]; then
+              echo "unuse puppeteer"
+            else
               chmod +x ./setup_libxcb.sh
               sh ./setup_libxcb.sh
             fi
@@ -34,10 +36,10 @@ jobs:
           name: Execute task
           command: |
             if [ -z "$CI_TASK" ]; then
-              yarn task
-            else
               echo "[ERROR] Undefined $CI_TASK"
               exit 1
+            else
+              yarn task
             fi
 
   update_access_token:
@@ -59,7 +61,7 @@ workflows:
   version: 2
   task_workflow:
     jobs:
-      - build
+      - update_access_token
   batch_workflow:
     triggers:
       - schedule:
