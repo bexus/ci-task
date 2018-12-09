@@ -6,12 +6,18 @@
   "license": "MIT",
   "scripts": {
     "start": "node forecast",
-    "task": "node $CI_TASK"
+    "task": "node $CI_TASK",
+    "update_token": "node fb_token"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "messaging-api-slack": "^0.7.11",
     "moment": "^2.22.2",
     "puppeteer": "^1.6.0",
     "request": "^2.88.0",
-    "url": "^0.11.0"
+    "tinder-client": "^3.0.0",
+    "underscore": "^1.9.1",
+    "url": "^0.11.0",
+    "xml2json": "^0.11.2"
   }
 }
