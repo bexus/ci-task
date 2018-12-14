@@ -18,11 +18,11 @@ module.exports = class TinderAuth {
       const browser = await pptr.launch(params)
       const page = await browser.newPage()
       await page.goto(FACEBOOK_AUTHENTICATION_TOKEN_URL)
-      await page.waitFor(5000)
+      await page.waitFor(3000)
       await page.type('#email', this._email)
       await page.type('#pass', this._password)
       await page.click('#loginbutton')
-      await page.waitFor(5000)
+      await page.waitFor(3000)
       const urlRegex = /\/v[0-9]\.[0-9]\/dialog\/oauth\/(confirm|read)\?dpr=[0-9]{1}/
       page.on('response', async response => {
         if (response.url().match(urlRegex)) {
